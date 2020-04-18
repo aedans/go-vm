@@ -13,6 +13,14 @@ const EQ = MEMORY_LENGTH - 2
 const LT = MEMORY_LENGTH - 3
 const GT = MEMORY_LENGTH - 4
 
+func boolToInt(b bool) uint8 {
+	if b {
+		return 1
+	} else {
+		return 0
+	}
+}
+
 func main() {
 	file, _ := os.Open(os.Args[1])
 	defer file.Close()
@@ -43,13 +51,9 @@ func main() {
 		case 3:
 			memory[IP] += 3
 			a, b := memory[memory[ip + 1]], memory[memory[ip + 2]]
-			if a < b {
-				memory[LT] = 1
-			} else if a > b {
-				memory[GT] = 1
-			} else {
-				memory[EQ] = 1
-			}
+			memory[LT] = boolToInt(a < b)
+			memory[GT] = boolToInt(a > b)
+			memory[EQ] = boolToInt(a == b)
 		case 4:
 			memory[IP] += 2
 			var b []byte = make([]byte, 1)
